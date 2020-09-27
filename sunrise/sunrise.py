@@ -30,12 +30,12 @@ def get_lat_long_from_rest_call():
     return lat, lon
 
 
-def get_sunrise_sunset_from_rest_call(lat, lon):
+def get_sunrise_sunset_from_rest_call(lat, lon, currdate):
     sunrise_url = get_from_config('Dusk Till Dawn', 'sunrise_sunset_rest_url')
     url_params = {
         "lat": lat,
         "lng": lon,
-        "date": "2020-09-19",
+        "date": currdate,
         "formatted": 0
     }
     print('url: ' + sunrise_url)
@@ -103,7 +103,7 @@ dusk_time = get_from_config('Dusk Till Dawn', 'dusk_time')
 
 if is_date_correct is False or (dawn_time == '' or dusk_time == ''):
     print('Either we do not have the correct date or the dawn/dusk times are not set. Fetching from rest endpoint')
-    dawn_time, dusk_time = get_sunrise_sunset_from_rest_call(latitude, longitude)
+    dawn_time, dusk_time = get_sunrise_sunset_from_rest_call(latitude, longitude, curr_date_obj.strftime("%Y-%m-%d"))
     update_config('Dusk Till Dawn', 'dawn_time', convert_date_from_utc(dawn_time))
     update_config('Dusk Till Dawn', 'dusk_time', convert_date_from_utc(dusk_time))
 
